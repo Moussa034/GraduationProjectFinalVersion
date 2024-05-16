@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Mapping</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="login">login</string>
+    <string name="not_yet_registeted_signup">not_yet_registeted_signup</string>
+    <string name="welcom_to_the_app_n_thank_you_diaa_n_joker">welcom_to_the_app_n_thank_you_diaa_n_joker</string>
+    <string name="sign_up">sign_up</string>
+    <string name="your_name">your_name</string>
+    <string name="user_name">user_name</string>
+    <string name="confirm_password">confirm_password</string>
+    <string name="signup">signup</string>
+    <string name="already_registeted_login">already_registeted_login</string>
 </resources>
