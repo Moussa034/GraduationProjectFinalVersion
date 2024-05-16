@@ -8,7 +8,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        //auth.signOut()button sign-out
+        //auth.signOut()button sign-out------------------------
 
     }
 }
