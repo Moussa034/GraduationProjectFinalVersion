@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -39,12 +40,23 @@ android {
 }
 
 dependencies {
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation("com.google.firebase:firebase-analytics")
+    // Add the dependencies for any other desired Firebase products
+    // https://firebase.google.com/docs/android/setup#available-libraries
+
+    implementation("com.google.firebase:firebase-database:20.3.1")
+    implementation("com.google.firebase:firebase-auth:22.3.1")
+    implementation ("com.intuit.sdp:sdp-android:1.1.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.firebase.database)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
