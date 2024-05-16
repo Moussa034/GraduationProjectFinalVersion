@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/image"
     android:padding="16dp"
-    tools:context=".SignupActivity">
+    tools:context=".UI.Signup.SignupActivity">
 
     <TextView
         android:id="@+id/signuptext"
@@ -18,7 +18,7 @@
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="16dp"
         android:fontFamily="@font/aclonica"
-        android:text="SIGN UP"
+        android:text="@string/sign_up"
         android:textColor="#212C35"
         android:textSize="50sp"
         android:textStyle="bold"
@@ -39,14 +39,16 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/edittext_border"
         android:fontFamily="@font/aclonica"
-        android:hint="Your Name"
+        android:hint="@string/your_name"
         android:padding="12dp"
         android:textColorHint="@color/white"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/signupEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signuptext" />
+        app:layout_constraintTop_toBottomOf="@+id/signuptext"
+        android:importantForAutofill="no"
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/signupEmail"
@@ -58,7 +60,7 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/edittext_border"
         android:fontFamily="@font/aclonica"
-        android:hint="Email"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:padding="12dp"
         android:textColorHint="@color/white"
@@ -66,7 +68,8 @@
         app:layout_constraintBottom_toTopOf="@+id/signupUsername"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signupName" />
+        app:layout_constraintTop_toBottomOf="@+id/signupName"
+        android:importantForAutofill="no" />
 
 
     <EditText
@@ -79,14 +82,16 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/edittext_border"
         android:fontFamily="@font/aclonica"
-        android:hint="User Name"
+        android:hint="@string/user_name"
         android:padding="12dp"
         android:textColorHint="@color/white"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/signupPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signupEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/signupEmail"
+        android:importantForAutofill="no"
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/signupPassword"
@@ -98,7 +103,7 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/edittext_border"
         android:fontFamily="@font/aclonica"
-        android:hint="Password"
+        android:hint="@string/password"
         android:inputType="textPassword"
         android:padding="12dp"
         android:textColorHint="@color/white"
@@ -106,7 +111,8 @@
         app:layout_constraintBottom_toTopOf="@+id/signupRePassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signupUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/signupUsername"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/signupRePassword"
@@ -118,7 +124,7 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/edittext_border"
         android:fontFamily="@font/aclonica"
-        android:hint="Confirm Password"
+        android:hint="@string/confirm_password"
         android:inputType="textPassword"
         android:padding="12dp"
         android:textColorHint="@color/white"
@@ -126,7 +132,8 @@
         app:layout_constraintBottom_toTopOf="@+id/signupButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signupPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/signupPassword"
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/signupButton"
@@ -136,7 +143,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:text="SIGNUP"
+        android:text="@string/signup"
         app:layout_constraintBottom_toTopOf="@+id/loginRedirect"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -149,9 +156,9 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:text="Already registeted? Login"
+        android:text="@string/already_registeted_login"
         android:textColor="@color/white"
-        android:textSize="18dp"
+        android:textSize="@dimen/_12sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
