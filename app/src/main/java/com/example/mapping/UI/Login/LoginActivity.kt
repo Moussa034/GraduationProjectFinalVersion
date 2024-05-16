@@ -39,9 +39,9 @@ class LoginActivity : AppCompatActivity() {
         password: String
     ) {
         if (email.isEmpty()) {
-            binding.loginEmail.error = "Req"
+            binding.loginEmail.error = "Required"
         } else if (password.isEmpty()) {
-            binding.loginPassword.error = "Req"
+            binding.loginPassword.error = "Required"
         } else {
             login(email, password)
         }

@@ -52,17 +52,17 @@ class SignupActivity : AppCompatActivity() {
         confPassword: String
     ) {
         if (name.isEmpty()) {
-            binding.signupName.error = "Req"
+            binding.signupName.error = "Required"
         } else if (email.isEmpty()) {
-            binding.signupEmail.error = "Req"
+            binding.signupEmail.error = "Required"
         } else if (username.isEmpty()) {
-            binding.signupUsername.error = "Req"
+            binding.signupUsername.error = "Required"
         } else if (password.isEmpty()) {
-            binding.signupPassword.error = "Req"
+            binding.signupPassword.error = "Required"
         } else if (confPassword.isEmpty()) {
-            binding.signupRePassword.error = "Req"
+            binding.signupRePassword.error = "Required"
         } else if (!password.equals(confPassword)) {
-            binding.signupRePassword.error = "not EQ"
+            binding.signupRePassword.error = "Not Matched"
         } else {
             Signup(name, email, username, password)
         }
