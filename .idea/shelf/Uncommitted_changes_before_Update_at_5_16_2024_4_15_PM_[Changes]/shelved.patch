@@ -1,0 +1,42 @@
+Index: app/build.gradle.kts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\r\n    alias(libs.plugins.androidApplication)\r\n    alias(libs.plugins.jetbrainsKotlinAndroid)\r\n}\r\n\r\nandroid {\r\n    namespace = \"com.example.mapping\"\r\n    compileSdk = 34\r\n\r\n    defaultConfig {\r\n        applicationId = \"com.example.mapping\"\r\n        minSdk = 24\r\n        targetSdk = 34\r\n        versionCode = 1\r\n        versionName = \"1.0\"\r\n\r\n        testInstrumentationRunner = \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            isMinifyEnabled = false\r\n            proguardFiles(\r\n                getDefaultProguardFile(\"proguard-android-optimize.txt\"),\r\n                \"proguard-rules.pro\"\r\n            )\r\n        }\r\n    }\r\n    compileOptions {\r\n        sourceCompatibility = JavaVersion.VERSION_1_8\r\n        targetCompatibility = JavaVersion.VERSION_1_8\r\n    }\r\n    kotlinOptions {\r\n        jvmTarget = \"1.8\"\r\n    }\r\n    buildFeatures{\r\n        viewBinding = true\r\n    }\r\n}\r\n\r\ndependencies {\r\n\r\n    implementation(libs.androidx.core.ktx)\r\n    implementation(libs.androidx.appcompat)\r\n    implementation(libs.material)\r\n    implementation(libs.androidx.activity)\r\n    implementation(libs.androidx.constraintlayout)\r\n    testImplementation(libs.junit)\r\n    androidTestImplementation(libs.androidx.junit)\r\n    androidTestImplementation(libs.androidx.espresso.core)\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle.kts b/app/build.gradle.kts
+--- a/app/build.gradle.kts	(revision 968c79f57ab3fb8b3118e97fd02d2ceb5c016941)
++++ b/app/build.gradle.kts	(date 1715865248409)
+@@ -1,6 +1,7 @@
+ plugins {
+     alias(libs.plugins.androidApplication)
+     alias(libs.plugins.jetbrainsKotlinAndroid)
++    id("com.google.gms.google-services")
+ }
+ 
+ android {
+@@ -39,12 +40,23 @@
+ }
+ 
+ dependencies {
++    // Import the Firebase BoM
++    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
++    // When using the BoM, don't specify versions in Firebase dependencies
++    implementation("com.google.firebase:firebase-analytics")
++    // Add the dependencies for any other desired Firebase products
++    // https://firebase.google.com/docs/android/setup#available-libraries
++
++    implementation("com.google.firebase:firebase-database:20.3.1")
++    implementation("com.google.firebase:firebase-auth:22.3.1")
++    implementation ("com.intuit.sdp:sdp-android:1.1.0")
+ 
+     implementation(libs.androidx.core.ktx)
+     implementation(libs.androidx.appcompat)
+     implementation(libs.material)
+     implementation(libs.androidx.activity)
+     implementation(libs.androidx.constraintlayout)
++    implementation(libs.firebase.database)
+     testImplementation(libs.junit)
+     androidTestImplementation(libs.androidx.junit)
+     androidTestImplementation(libs.androidx.espresso.core)
