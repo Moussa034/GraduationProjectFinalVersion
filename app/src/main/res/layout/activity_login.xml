@@ -7,10 +7,10 @@
     android:layout_height="match_parent"
     android:background="@drawable/image"
     android:padding="16dp"
-    tools:context=".LoginActivity">
+    tools:context=".UI.Login.LoginActivity">
 
     <EditText
-        android:id="@+id/loginUsername"
+        android:id="@+id/loginEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -19,14 +19,16 @@
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/aclonica"
         android:background="@drawable/edittext_border"
-        android:hint="Username"
+        android:inputType="textEmailAddress"
+        android:hint="@string/email"
         android:textColorHint="@color/white"
         android:padding="12dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/loginPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/loginPassword"
@@ -37,7 +39,7 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/edittext_border"
         android:fontFamily="@font/aclonica"
-        android:hint="Password"
+        android:hint="@string/password"
         android:inputType="textPassword"
         android:padding="12dp"
         android:textColor="@color/black"
@@ -46,7 +48,8 @@
         app:layout_constraintBottom_toTopOf="@+id/loginButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/loginEmail"
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/loginButton"
@@ -55,7 +58,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:text="LOGIN"
+        android:text="@string/login"
         app:layout_constraintBottom_toTopOf="@+id/signupRedirect"
         app:layout_constraintDimensionRatio="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -66,8 +69,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/signupRedirect"
-        android:text="NOT yet registeted? Signup"
-        android:textSize="18dp"
+        android:text="@string/not_yet_registeted_signup"
+        android:textSize="@dimen/_12sdp"
         android:gravity="center"
         android:textColor="@color/white"
         android:layout_marginTop="16dp"
