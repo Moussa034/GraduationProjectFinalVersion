@@ -4,8 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.loginsignupsql.DatabaseHelper
-import com.example.mapping.UI.Home.HomeActivity
+import com.example.mapping.UI.Home.MainActivity
 import com.example.mapping.SignupModel
 import com.example.mapping.UI.Login.LoginActivity
 import com.example.mapping.USERS
@@ -75,7 +74,7 @@ class SignupActivity : AppCompatActivity() {
                 sendDataToDataBase(name, email, username)
             }
             .addOnFailureListener {
-                Toast.makeText(this, "Failed to create user", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "User Already Exists", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -83,7 +82,7 @@ class SignupActivity : AppCompatActivity() {
         ref.child(USERS).child(auth.uid.toString())
             .setValue(SignupModel(name, username, email, auth.uid.toString()))
             .addOnSuccessListener {
-                startActivity(Intent(this, HomeActivity::class.java))
+                startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }.addOnFailureListener {
                 Toast.makeText(this,it.message, Toast.LENGTH_SHORT).show()

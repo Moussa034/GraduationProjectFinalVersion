@@ -4,8 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.loginsignupsql.DatabaseHelper
-import com.example.mapping.UI.Home.HomeActivity
+import com.example.mapping.UI.Home.MainActivity
 import com.example.mapping.UI.Signup.SignupActivity
 import com.example.mapping.databinding.ActivityLoginBinding
 import com.google.firebase.Firebase
@@ -50,7 +49,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun login(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password).addOnSuccessListener {
-            startActivity(Intent(this, HomeActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }.addOnFailureListener {
             Toast.makeText(this,it.message, Toast.LENGTH_SHORT).show()
