@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mapping.UI.Home.Main1Activity
+import com.example.mapping.UI.Home.MainActivity
 import com.example.mapping.UI.Login.LoginActivity
 import com.example.mapping.databinding.ActivitySplashBinding
 import com.google.firebase.Firebase
@@ -25,7 +25,7 @@ class SplashActivity : AppCompatActivity() {
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             } else {
-                startActivity(Intent(this, Main1Activity::class.java))
+                startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
         }, 3000)
