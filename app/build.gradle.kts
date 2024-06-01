@@ -50,7 +50,8 @@ dependencies {
     implementation("com.google.firebase:firebase-database:20.3.1")
     implementation("com.google.firebase:firebase-auth:22.3.1")
     implementation ("com.intuit.sdp:sdp-android:1.1.0")
-
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.10.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
