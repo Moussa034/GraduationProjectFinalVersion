@@ -1,6 +1,5 @@
 package com.example.mapping
 
-import com.example.mapping.UI.Home.FeatureCollection
 import retrofit2.http.GET
 import retrofit2.http.Query
 

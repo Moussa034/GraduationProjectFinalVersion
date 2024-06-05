@@ -3,6 +3,7 @@ package com.example.mapping.UI.Home
 import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Location
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.webkit.WebResourceError
@@ -17,42 +18,78 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.mapping.ApiCalls
+import com.example.mapping.Feature
 import com.example.mapping.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.OnSuccessListener
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 class MainActivity : AppCompatActivity() {
 
-    private val qgisCloudMapUrl = "https://qgiscloud.com/Moussa03/modifiedGPmap/?l=modifiedCracksLayes&bl=mapnik&t=modifiedGPmap&e=3483012%2C3484240%2C3491140%2C3487960"
+    private val qgisCloudMapUrl =
+        "https://qgiscloud.com/Moussa03/modifiedGPmap/?l=modifiedCracksLayes&bl=mapnik&t=modifiedGPmap&e=3483012%2C3484240%2C3491140%2C3487960"
     private val baseUrl = "https://qgiscloud.com/Moussa03/modifiedGPmap/"
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var userLocation: Location? = null
+    private lateinit var pointsArray: Array<Array<Double>>
+    private lateinit var userLocationArray: Array<Double>
+    private var locationFetchJob: Job? = null
+    private val locationFetchInterval = 10000L // 10 seconds
+    private var mediaPlayer: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val webView: WebView = findViewById(R.id.webView)
-        val searchEditText: EditText = findViewById(R.id.searchEditText)
+        initViews()
+        initWebView()
+        initializeLocationClient()
+
+        lifecycleScope.launch {
+            val fetchJob = fetchFeatureData()
+            fetchJob.join() // Wait for fetchFeatureData() to complete
+            checkLocationPermissionsAndFetchLocation()
+        }
+    }
+
+    private fun initViews() {
         val searchButton: Button = findViewById(R.id.searchButton)
+        searchButton.setOnClickListener {
+            val searchEditText: EditText = findViewById(R.id.searchEditText)
+            val crackNumber = searchEditText.text.toString()
+            if (crackNumber.isNotEmpty()) {
+                lifecycleScope.launch {
+                    val fetchJob = fetchFeatureData()
+                    fetchJob.join() // Wait for fetchFeatureData() to complete
+                    checkLocationPermissionsAndFetchLocation()
+                }
+            } else {
+                Log.e("MainActivity", "Search input is empty")
+            }
+        }
+    }
 
-        // Initialize FusedLocationProviderClient
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
-        // Enable JavaScript and other settings
+    private fun initWebView() {
+        val webView: WebView = findViewById(R.id.webView)
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
         webView.settings.cacheMode = WebSettings.LOAD_DEFAULT
+        webView.clearCache(true)
 
-        // Override WebViewClient to handle errors
         webView.webViewClient = object : WebViewClient() {
             override fun onReceivedError(
                 view: WebView?,
@@ -60,7 +97,6 @@ class MainActivity : AppCompatActivity() {
                 error: WebResourceError?
             ) {
                 // Handle error
-                // You can show a custom error message or take other actions
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
@@ -68,70 +104,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Clear cache to avoid ERR_CACHE_MISS
-        webView.clearCache(true)
-
-        // Load the QGIS Cloud map URL
         webView.loadUrl(qgisCloudMapUrl)
-
-        // Set up button click listener
-        searchButton.setOnClickListener {
-            val crackNumber = searchEditText.text.toString()
-            if (crackNumber.isNotEmpty()) {
-                // Perform search or fetch feature data based on the crack number
-                fetchFeatureData()
-            } else {
-                // Handle empty input if necessary
-                Log.e("MainActivity", "Search input is empty")
-            }
-        }
-
-        // Fetch initial feature data
-        fetchFeatureData()
-
-        // Check location permissions and get the last known location
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                REQUEST_LOCATION_PERMISSION
-            )
-        } else {
-            getLastKnownLocation()
-        }
     }
 
-    private fun getLastKnownLocation() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-            == PackageManager.PERMISSION_GRANTED) {
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener(this, OnSuccessListener<Location> { location ->
-                    // Got last known location. In some rare situations, this can be null.
-                    if (location != null) {
-                        // Store the location object in userLocation variable
-                        userLocation = location
-                        Log.e("MainActivity", "Latitude: ${location.latitude}, Longitude: ${location.longitude}")
-                    }
-                })
-        }
+    private fun initializeLocationClient() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            REQUEST_LOCATION_PERMISSION -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    getLastKnownLocation()
-                } else {
-                    // Permission denied
-                }
-                return
-            }
-        }
-    }
-
-    private fun fetchFeatureData() {
+    private suspend fun fetchFeatureData(): Job {
         val client = OkHttpClient.Builder()
             .connectTimeout(120, TimeUnit.SECONDS)
             .writeTimeout(150, TimeUnit.SECONDS)
@@ -144,20 +124,15 @@ class MainActivity : AppCompatActivity() {
 
         val service = retrofit.create(ApiCalls::class.java)
 
-        lifecycleScope.launch {
+        return lifecycleScope.launch {
             try {
                 val response = service.getFeature()
-                if (response.code()==200) {
+                if (response.code() == 200) {
                     val featureCollection = response.body()
                     featureCollection?.features?.let { features ->
                         if (features.isNotEmpty()) {
-                            // Process the first feature or implement your logic
-                            val feature = features[0]
-                            val properties = feature.properties
-                            val geometry = feature.geometry
-
-                            // Trigger an alarm or notification based on the feature data
-                     //       triggerAlarm(properties, geometry)
+                            pointsArray = convertFeaturesTo2DArray(features)
+                            return@launch
                         }
                     }
                 } else {
@@ -169,40 +144,140 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun triggerAlarm(properties: Map<String, Any>, geometry: Geometry) {
-        // Implement your alarm or notification logic here
-        // For example, check if a certain property matches a condition
-        val alertProperty = properties["alert"]
-        if (alertProperty == "trigger") {
-            // Trigger the alarm or notification
-            Log.d("QgisCloud", "Alarm triggered based on feature data")
+    private fun checkLocationPermissionsAndFetchLocation() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_LOCATION_PERMISSION
+            )
+        } else {
+            startLocationFetchLoop()
         }
+    }
+
+    private fun startLocationFetchLoop() {
+        locationFetchJob = lifecycleScope.launch {
+            while (isActive) {
+                val location = getLastKnownLocation()
+                if (location != null) {
+                    userLocation = location
+                    //        userLocationArray = arrayOf(location.longitude, location.latitude)
+                    userLocationArray = arrayOf(
+                        3486164.43487, 3487510.21137
+                    )
+//Moussa send regards
+                    Log.e(
+                        "MainActivity",
+                        "Latitude: ${location.latitude}, Longitude: ${location.longitude}"
+                    )
+                    checkProximityToPoints()
+                } else {
+                    Log.e("MainActivity", "Failed to get location.")
+                }
+
+                delay(locationFetchInterval)
+            }
+        }
+    }
+
+    private suspend fun getLastKnownLocation(): Location? {
+        return withContext(Dispatchers.IO) {
+            var location: Location? = null
+            val job = CompletableDeferred<Unit>()
+            if (ContextCompat.checkSelfPermission(
+                    this@MainActivity,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                fusedLocationClient.lastLocation.addOnSuccessListener { loc ->
+                    location = loc
+                    job.complete(Unit)
+                }.addOnFailureListener {
+                    job.complete(Unit)
+                }
+            }
+            job.await()
+            location
+        }
+    }
+
+    private fun checkProximityToPoints() {
+        var location = 0
+        for (point in pointsArray) {
+            val distance = calculateDistance(
+                userLocationArray[1], userLocationArray[0],
+                point[1], point[0]
+            )
+            if (distance <= 500) {
+                triggerAlarm()
+                break
+            } else {
+                Log.e("MainActivity", "ALARM TRIGGERED")
+                location++
+            }
+        }
+    }
+
+    private fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val earthRadius = 6371000 // meters
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+        val a = sin(dLat / 2) * sin(dLat / 2) +
+                cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2)) *
+                sin(dLon / 2) * sin(dLon / 2)
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        return earthRadius * c
+    }
+
+    private fun triggerAlarm() {
+        mediaPlayer?.stop()
+        mediaPlayer?.release()
+        mediaPlayer = MediaPlayer.create(this, R.raw.alarm_sound)
+        mediaPlayer?.start()
+
+        // Stop the sound after 5 seconds
+        lifecycleScope.launch {
+            delay(5000)
+            mediaPlayer?.stop()
+            mediaPlayer?.release()
+            mediaPlayer = null
+        }
+
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_LOCATION_PERMISSION) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startLocationFetchLoop()
+            } else {
+                // Permission denied
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        locationFetchJob?.cancel() // Cancel the job when the activity is destroyed
+        mediaPlayer?.release()
+    }
+
+    private fun convertFeaturesTo2DArray(features: List<Feature>): Array<Array<Double>> {
+        return features.map { feature ->
+            arrayOf(feature.properties.longitude, feature.properties.latitude)
+        }.toTypedArray()
     }
 
     companion object {
         private const val REQUEST_LOCATION_PERMISSION = 1
     }
 }
-
-interface QgisCloudService {
-    @GET("wfs?service=WFS&version=1.0.0&request=GetFeature&outputFormat=application/json")
-    suspend fun getFeature(
-        @Query("typeName") typeName: String
-    ): retrofit2.Response<FeatureCollection>
-}
-
-data class FeatureCollection(
-    val type: String,
-    val features: List<Feature>
-)
-
-data class Feature(
-    val type: String,
-    val properties: Map<String, Any>,
-    val geometry: Geometry
-)
-
-data class Geometry(
-    val type: String,
-    val coordinates: List<Double>
-)
