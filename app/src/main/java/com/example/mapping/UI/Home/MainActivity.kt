@@ -170,7 +170,7 @@ class MainActivity : AppCompatActivity() {
                     userLocationArray = arrayOf(
                         3486164.43487, 3487510.21137
                     )
-
+//Moussa send regards
                     Log.e(
                         "MainActivity",
                         "Latitude: ${location.latitude}, Longitude: ${location.longitude}"
