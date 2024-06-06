@@ -11,4 +11,26 @@
     <string name="confirm_password">confirm_password</string>
     <string name="signup">signup</string>
     <string name="already_registeted_login">already_registeted_login</string>
+    <string name="capture_image">Capture image</string>
+    <string name="city">City</string>
+    <string name="longtitude">lontitude</string>
+    <string name="latitude">latitude</string>
+    <string name="country">country</string>
+    <string name="address">address</string>
+    <string name="get_location">get location</string>
+    <string name="your_address">Your Address :</string>
+    <string name="add_to_database">Add to Database</string>
+    <string name="send_to_database">send to Database</string>
+    <string name="confirm_and_send">confirm and send</string>
+    <string name="please_wait_while_we_processing_image">Please wait while we processing image</string>
+    <string name="todo">TODO</string>
+    <string name="confirm_address">Confirm Address</string>
+    <string name="capture_crack">Capture crack</string>
+    <string name="this_is_the_hidden_text_view">This is the hidden text view</string>
+    <string name="please_wait_while_we_process_your_image">Please wait while we process your image</string>
+    <string name="confirm">Confirm</string>
+    <string name="thankk_you">Thankk you</string>
+    <string name="thank_you_for_helping">Thank you for helping</string>
+    <string name="thank_you_for_helping_us_takes_up_to_date_to_new_cracks">Thank you for helping us takes up to date to new cracks</string>
+    <string name="thank_you_for_helping_us_takes_up_to_date_new_cracks">thank you for helping us takes up to date new cracks</string>
 </resources>
