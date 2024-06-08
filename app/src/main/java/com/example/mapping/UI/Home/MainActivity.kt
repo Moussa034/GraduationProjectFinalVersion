@@ -1,6 +1,7 @@
 package com.example.mapping.UI.Home
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.media.MediaPlayer
@@ -13,6 +14,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.EditText
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -20,6 +22,10 @@ import androidx.lifecycle.lifecycleScope
 import com.example.mapping.ApiCalls
 import com.example.mapping.Feature
 import com.example.mapping.R
+import com.example.mapping.UI.CrackReporting.cameraCapture
+import com.example.mapping.UI.Profile.ProfileActivity
+import com.example.mapping.databinding.ActivityMainBinding
+import com.example.mapping.databinding.ActivityProfileBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.CompletableDeferred
@@ -50,12 +56,15 @@ class MainActivity : AppCompatActivity() {
     private var locationFetchJob: Job? = null
     private val locationFetchInterval = 10000L // 10 seconds
     private var mediaPlayer: MediaPlayer? = null
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        enableEdgeToEdge()
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        onClick()
 
-        initViews()
         initWebView()
         initializeLocationClient()
 
@@ -65,24 +74,6 @@ class MainActivity : AppCompatActivity() {
             checkLocationPermissionsAndFetchLocation()
         }
     }
-
-    private fun initViews() {
-        val searchButton: Button = findViewById(R.id.searchButton)
-        searchButton.setOnClickListener {
-            val searchEditText: EditText = findViewById(R.id.searchEditText)
-            val crackNumber = searchEditText.text.toString()
-            if (crackNumber.isNotEmpty()) {
-                lifecycleScope.launch {
-                    val fetchJob = fetchFeatureData()
-                    fetchJob.join() // Wait for fetchFeatureData() to complete
-                    checkLocationPermissionsAndFetchLocation()
-                }
-            } else {
-                Log.e("MainActivity", "Search input is empty")
-            }
-        }
-    }
-
     private fun initWebView() {
         val webView: WebView = findViewById(R.id.webView)
         webView.settings.javaScriptEnabled = true
@@ -279,5 +270,24 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val REQUEST_LOCATION_PERMISSION = 1
+    }
+
+    private fun onClick() {
+        binding.map.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        binding.profile.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        binding.camera.setOnClickListener {
+            val intent = Intent(this, cameraCapture::class.java)
+            startActivity(intent)
+            finish()
+        }
+
     }
 }

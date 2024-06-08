@@ -1,29 +1,85 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="UI.Home.MainActivity">
+    tools:context=".UI.Home.MainActivity">
+
+
+
 
     <WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="@dimen/_502sdp"
+        tools:ignore="MissingConstraints" />
 
-    <EditText
-        android:id="@+id/searchEditText"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/searchButton"
-        android:hint="Enter Crack Number"
-        android:padding="5dp" />
+        android:background="#425360"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
 
-    <Button
-        android:id="@+id/searchButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:padding="5dp"
-        android:text="Search" />
-</RelativeLayout>
+        <Button
+            android:id="@+id/map"
+            android:layout_width="130dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="0dp"
+            android:backgroundTint="#365A6A"
+            android:fontFamily="@font/aclonica"
+            android:text="Map"
+            android:textAlignment="textStart"
+            android:textColor="#FFFFFF"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            app:icon="@drawable/map"
+            app:iconPadding="10dp"
+            app:iconTint="#FFFFFF" />
+
+        <Button
+            android:id="@+id/camera"
+            android:layout_width="130dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="140dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:backgroundTint="#365A6A"
+            android:fontFamily="@font/aclonica"
+            android:text="Camera"
+            android:textAlignment="viewStart"
+            android:textColor="#FFFFFF"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            app:icon="@drawable/plus"
+            app:iconPadding="10dp"
+            app:iconTint="#FFFFFF" />
+
+        <Button
+            android:id="@+id/profile"
+            android:layout_width="130dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="279dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:backgroundTint="#365A6A"
+            android:fontFamily="@font/aclonica"
+            android:text="Profile"
+            android:textAlignment="textStart"
+            android:textColor="#FFFFFF"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            app:icon="@drawable/people"
+            app:iconPadding="10dp"
+            app:iconTint="#FFFFFF" />
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

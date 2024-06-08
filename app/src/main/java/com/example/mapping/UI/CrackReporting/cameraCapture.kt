@@ -36,6 +36,10 @@ import android.app.Application
 import android.content.Context
 import android.os.Environment
 import android.view.View
+import com.example.mapping.UI.Home.MainActivity
+import com.example.mapping.UI.Profile.ProfileActivity
+import com.example.mapping.databinding.ActivityProfileBinding
+import com.example.mapping.databinding.CameraCaptureBinding
 import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.database
@@ -101,8 +105,11 @@ class cameraCapture : AppCompatActivity() {
         }
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+
         try {
             FirebaseApp.initializeApp(this)
 
@@ -136,6 +143,7 @@ class cameraCapture : AppCompatActivity() {
             val x = 5
         }
     }
+
 
     fun bitmapToUri(context: Context, bitmap: Bitmap): Uri? {
         // Get the external storage directory
@@ -261,4 +269,5 @@ class cameraCapture : AppCompatActivity() {
             val x = 5
         }
     }
+
 }

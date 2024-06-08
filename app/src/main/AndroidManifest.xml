@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -19,37 +21,42 @@
         android:theme="@style/Theme.Mapping"
         tools:targetApi="31">
         <activity
+            android:name=".UI.Profile.ProfileActivity"
+            android:exported="true">
+        </activity>
+        <activity
             android:name=".UI.Splash.SplashActivity"
             android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".UI.Login.LoginActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".UI.Signup.SignupActivity"
-            android:exported="false" />
-
+            android:exported="true" />
         <activity
             android:name=".UI.Home.MainActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".UI.CrackReporting.cameraCapture"
             android:exported="true" />
         <activity
             android:name=".UI.CrackReporting.PredictedImage"
             android:exported="true" />
+
         <provider
-            android:authorities="com.example.mapping.UI.CrackReporting.FileProvider"
             android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.mapping.UI.CrackReporting.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
-            <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
         </provider>
     </application>
 
