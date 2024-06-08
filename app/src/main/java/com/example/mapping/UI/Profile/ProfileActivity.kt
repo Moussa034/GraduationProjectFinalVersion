@@ -13,6 +13,7 @@ import com.example.mapping.R
 import com.example.mapping.SignupModel
 import com.example.mapping.UI.CrackReporting.cameraCapture
 import com.example.mapping.UI.Home.MainActivity
+import com.example.mapping.UI.Login.LoginActivity
 import com.example.mapping.databinding.ActivityProfileBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.AdditionalUserInfo
@@ -63,36 +64,6 @@ class ProfileActivity : AppCompatActivity() {
         //diaa
     }
 
-
-
-
-
-
-
-
-    /*myArrayRef.addValueEventListener(object : ValueEventListener {
-        override fun onDataChange(dataSnapshot: DataSnapshot) {
-            // This method is called once with the initial value and again
-            // whenever data at this location is updated.
-            val arrayList = ArrayList<String>()
-            for (snapshot in dataSnapshot.children) {
-                val value = snapshot.getValue(String::class.java)
-                if (value != null) {
-                    arrayList.add(value)
-                }
-            }
-            println("Array is: $arrayList")
-        }
-
-        override fun onCancelled(error: DatabaseError) {
-            // Failed to read value
-            println("Failed to read value: ${error.toException()}")
-        }
-    })*/
-
-
-
-
     private fun onClick() {
         binding.map1.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
@@ -106,6 +77,13 @@ class ProfileActivity : AppCompatActivity() {
         }
         binding.profileImage.setOnClickListener{
             openGallery()
+        }
+        binding.logoutButton.setOnClickListener {
+            auth.signOut()
+            // After logout, redirect to the login activity
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish() // Close the current activity
         }
 
     }
