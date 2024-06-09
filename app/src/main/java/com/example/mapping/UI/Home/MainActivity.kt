@@ -273,11 +273,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onClick() {
-        binding.map.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+
         binding.profile.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
