@@ -157,10 +157,10 @@ class MainActivity : AppCompatActivity() {
                 val location = getLastKnownLocation()
                 if (location != null) {
                     userLocation = location
-                    //        userLocationArray = arrayOf(location.longitude, location.latitude)
-                    userLocationArray = arrayOf(
-                        3486164.43487, 3487510.21137
-                    )
+                    userLocationArray = arrayOf(location.longitude, location.latitude)
+//                    userLocationArray = arrayOf(
+//                        3486164.43487, 3487510.21137
+//                    )
 //Moussa send regards
                     Log.e(
                         "MainActivity",
@@ -204,7 +204,7 @@ class MainActivity : AppCompatActivity() {
                 userLocationArray[1], userLocationArray[0],
                 point[1], point[0]
             )
-            if (distance <= 500) {
+            if (distance <= 700) {
                 triggerAlarm()
                 break
             } else {
@@ -213,7 +213,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
+//
     private fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
         val earthRadius = 6371000 // meters
         val dLat = Math.toRadians(lat2 - lat1)

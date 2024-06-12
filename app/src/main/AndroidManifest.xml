@@ -44,10 +44,10 @@
             android:exported="true" />
         <activity
             android:name=".UI.CrackReporting.cameraCapture"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".UI.CrackReporting.PredictedImage"
-            android:exported="true" />
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
